@@ -143,9 +143,9 @@ io.on("connection", function (uniqueSocket) {
 
 
 
+const port = process.env.PORT || 3000;
 
 
-
-server.listen(3000, function () {
-    console.log("Badhiya Chal raha server!");
+server.listen(port, function () {
+    console.log(`Badhiya Chal raha server PORT ${port} pe !`);
 });
