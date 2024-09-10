@@ -50,11 +50,12 @@ socket.on("waitforother", ()=>
     gameEnd.innerHTML = `
     <div class="absolute inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center h-full z-50">
     <h1 class="text-center text-5xl font-medium text-white p-5 rounded-lg shadow-lg my-4">
-Waiting For Another Player to join!!
+Waiting For Another Player to join....
     </h1>
     <br>
-    <button onclick="copyText(this)" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-300">
-    Copy Text
+    <h3 class="text-xl text-white p-4">Ask your friend to join!</h3>
+    <button onclick="copyText(this)" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition-colors duration-300">
+    Game Link Here
   </button>
     
 </div>` )

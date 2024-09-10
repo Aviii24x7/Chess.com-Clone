@@ -141,9 +141,9 @@
       function copyText(button) {
         const textToCopy = "https://chessavi-lawtpadx.b4a.run/";
         navigator.clipboard.writeText(textToCopy).then(() => {
-          button.textContent = "Copied!";
+          button.textContent = "Link Copied!";
           setTimeout(() => {
-            button.textContent = "Copy Text";
+            button.textContent = "Game Link Here";
           }, 2000); // Revert back to original text after 2 seconds
         }).catch(err => {
           console.error('Failed to copy: ', err);
