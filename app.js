@@ -35,10 +35,16 @@ io.on("connection", function (uniqueSocket) {
     if(!players.white){
         players.white = uniqueSocket.id;
         uniqueSocket.emit("playerRole", "w");
+        if(!players.black){
+            io.emit('waitforother');
+        }
     }
     else if(!players.black){
         players.black = uniqueSocket.id;
+        
         uniqueSocket.emit("playerRole", "b");
+        
+        io.emit('stopwaiting');
     }
     else{
         uniqueSocket.emit("spectatorRole");
@@ -98,11 +104,11 @@ io.on("connection", function (uniqueSocket) {
 
             if(chess.isCheckmate()){
                 console.log("Check Mate")
-                uniqueSocket.emit("checkmate", chess.turn());
+                io.emit("checkmate", chess.turn());
             }
             else{
                 // console.log(true)
-                uniqueSocket.emit("draw");
+                io.emit("draw");
             }
 
         };
@@ -147,5 +153,5 @@ const port = process.env.PORT || 3000;
 
 
 server.listen(port, function () {
-    console.log(`Badhiya Chal raha server PORT ${port} pe !`);
+    console.log(`Hey Avi, I am Server running on PORT ${port}!`);
 });

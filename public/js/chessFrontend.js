@@ -23,6 +23,8 @@ const showNotification = (message, displayDurationInSeconds) => {
 
 
 const gameEnd = document.getElementById("gameEnd");
+const undoresetbtn = document.getElementById("undoresetbtn");
+const roletag = document.getElementById("role");
 
 socket.on("checkmate", (turn) => {
     var audio = new Audio(
@@ -43,6 +45,23 @@ socket.on("checkmate", (turn) => {
 </div>`
 
 });
+
+socket.on("waitforother", ()=>
+    gameEnd.innerHTML = `
+    <div class="absolute inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center h-full z-50">
+    <h1 class="text-center text-5xl font-medium text-white p-5 rounded-lg shadow-lg my-4">
+Waiting For Another Player to join!!
+    </h1>
+    <br>
+    <button onclick="copyText(this)" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-300">
+    Copy Text
+  </button>
+    
+</div>` )
+
+socket.on("stopwaiting", ()=>{
+    console.log("stop");
+    gameEnd.innerHTML = ""})
 
 socket.on("draw", () => {
     var audio = new Audio(
@@ -126,14 +145,19 @@ const renderBoard = () => {
     });
     
     if(playerRole === "b"){
+        roletag.innerText = "Black Beasts!"
         boardElement.classList.add("flipped")
     }
-    else{
+    else if(playerRole === "w"){
+        roletag.innerText = "White Warriors!"
         boardElement.classList.remove("flipped")
+    }
+    else{
+    roletag.innerText = "You are in Spectator Mode!";
     }
     
     // ab board ban gyaa to use daal do fir frontend pe
-
+    
 
 };
 
@@ -154,19 +178,13 @@ const renderBoard = () => {
 const resetGame = document.getElementById("resetGame");
 
 resetGame.addEventListener('click', ()=> {
-    gameEnd.innerHTML = `    <h2 class="text-3xl font-bold text-red-500 tracking-wider 
-        drop-shadow-sm hover:text-red-400 transition duration-200 ease-in-out">
-     Chess.avi
- </h2>`;
  socket.emit("resetBoard");
 });
 
 socket.on('newGame', ()=> {
-    gameEnd.innerHTML = `    <h2 class="text-3xl font-bold text-red-500 tracking-wider 
-        drop-shadow-sm hover:text-red-400 transition duration-200 ease-in-out">
-     Chess.avi
-    </h2>`;
+
     socket.emit("resetBoard");
+    gameEnd.innerHTML = "";
 });
 
 // handling Undo on button click
@@ -216,7 +234,8 @@ socket.on("playerRole", function (role){
 });
 
 socket.on("spectatorRole", ()=>{
-    showNotification("You are in spectator role!", 1);
+
+    undoresetbtn.innerHTML = '<button class="bg-blue-800 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition-transform duration-200 ease-in-out transform hover:scale-105"> You are a good spectator! </button>';
 
     playerRole=null;
     renderBoard();
